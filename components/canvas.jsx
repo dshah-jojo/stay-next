@@ -20,31 +20,59 @@ import {
 } from '@/components/screens/rituals';
 import { TravelHome, TravelSpeak, TravelTable } from '@/components/screens/travel';
 
+function StayLogo() {
+  return (
+    <div>
+      <div style={css('display:flex;align-items:center;gap:9px')}>
+        <div style={css('width:26px;height:26px;border-radius:9px;border:1px solid var(--color-accent);display:flex;align-items:center;justify-content:center')}><div style={css('width:8px;height:8px;border-radius:50%;background:var(--color-accent);box-shadow:0 0 10px var(--color-accent)')}></div></div>
+        <div style={css('font-size:19px;font-weight:600;letter-spacing:.22em')}>STAY</div>
+      </div>
+      <div style={css('margin-top:8px;font-size:12.5px;line-height:1.5;color:var(--color-neutral-400)')}>Apni Dhun Mein Raho — vernacular AI life companion. Core prototype, 16 screens.</div>
+    </div>
+  );
+}
+
+function RailGroups({ v, onNavigate }) {
+  return (
+    <div style={css('display:flex;flex-direction:column;gap:14px')}>
+      {v.railGroups.map((g, gi) => (
+        <div key={gi}>
+          <div style={css('font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-neutral-600);margin-bottom:6px')}>{g.name}</div>
+          <div style={css('display:flex;flex-direction:column;gap:2px')}>
+            {g.items.map((it, ii) => (
+              <div key={ii} onClick={() => { it.go(); if (onNavigate) onNavigate(); }} className="hv-bg-n900" style={css('display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:8px;cursor:pointer;font-size:12.5px;color:' + it.fg + ';background:' + it.bg + ';border-left:2px solid ' + it.mark)}>
+                <i className={'ph ' + it.icon} style={css('font-size:14px;opacity:.8')}></i><span>{it.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function Switchers({ v }) {
+  return (
+    <div style={css('display:flex;flex-direction:column;gap:13px')}>
+      {v.switchers.map((s, si) => (
+        <div key={si}>
+          <div style={css('font-size:11px;color:var(--color-neutral-400);margin-bottom:6px')}>{s.name}</div>
+          <div style={css('display:flex;gap:4px;padding:3px;border-radius:9px;background:var(--color-neutral-900);border:1px solid var(--color-divider)')}>
+            {s.opts.map((o, oi) => (
+              <div key={oi} onClick={o.go} style={css('flex:1;text-align:center;padding:6px 2px;border-radius:7px;font-size:11px;cursor:pointer;background:' + o.bg + ';color:' + o.fg)}>{o.label}</div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 function Rail({ v }) {
   return (
     <div style={css('width:250px;flex:none;display:flex;flex-direction:column;gap:22px;position:sticky;top:40px')}>
-      <div>
-        <div style={css('display:flex;align-items:center;gap:9px')}>
-          <div style={css('width:26px;height:26px;border-radius:9px;border:1px solid var(--color-accent);display:flex;align-items:center;justify-content:center')}><div style={css('width:8px;height:8px;border-radius:50%;background:var(--color-accent);box-shadow:0 0 10px var(--color-accent)')}></div></div>
-          <div style={css('font-size:19px;font-weight:600;letter-spacing:.22em')}>STAY</div>
-        </div>
-        <div style={css('margin-top:8px;font-size:12.5px;line-height:1.5;color:var(--color-neutral-400)')}>Apni Dhun Mein Raho — vernacular AI life companion. Core prototype, 16 screens.</div>
-      </div>
-
-      <div style={css('display:flex;flex-direction:column;gap:14px')}>
-        {v.railGroups.map((g, gi) => (
-          <div key={gi}>
-            <div style={css('font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-neutral-600);margin-bottom:6px')}>{g.name}</div>
-            <div style={css('display:flex;flex-direction:column;gap:2px')}>
-              {g.items.map((it, ii) => (
-                <div key={ii} onClick={it.go} className="hv-bg-n900" style={css('display:flex;align-items:center;gap:8px;padding:6px 9px;border-radius:8px;cursor:pointer;font-size:12.5px;color:' + it.fg + ';background:' + it.bg + ';border-left:2px solid ' + it.mark)}>
-                  <i className={'ph ' + it.icon} style={css('font-size:14px;opacity:.8')}></i><span>{it.label}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
-      </div>
+      <StayLogo />
+      <RailGroups v={v} />
     </div>
   );
 }
@@ -54,17 +82,8 @@ function RightPanel({ v }) {
     <div style={css('width:290px;flex:none;display:flex;flex-direction:column;gap:16px;position:sticky;top:40px')}>
       <div style={css('padding:16px;border-radius:12px;background:#181a2a;border:1px solid var(--color-divider)')}>
         <div style={css('font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-neutral-600)')}>Live switches</div>
-        <div style={css('margin-top:13px;display:flex;flex-direction:column;gap:13px')}>
-          {v.switchers.map((s, si) => (
-            <div key={si}>
-              <div style={css('font-size:11px;color:var(--color-neutral-400);margin-bottom:6px')}>{s.name}</div>
-              <div style={css('display:flex;gap:4px;padding:3px;border-radius:9px;background:var(--color-neutral-900);border:1px solid var(--color-divider)')}>
-                {s.opts.map((o, oi) => (
-                  <div key={oi} onClick={o.go} style={css('flex:1;text-align:center;padding:6px 2px;border-radius:7px;font-size:11px;cursor:pointer;background:' + o.bg + ';color:' + o.fg)}>{o.label}</div>
-                ))}
-              </div>
-            </div>
-          ))}
+        <div style={css('margin-top:13px')}>
+          <Switchers v={v} />
         </div>
       </div>
 
@@ -192,16 +211,60 @@ function PhoneContent({ v }) {
   );
 }
 
+function MobileShell({ v }) {
+  const [open, setOpen] = React.useState(false);
+  const close = () => setOpen(false);
+  return (
+    <div className="stay-mobile">
+      {/* the app itself, full-screen (positioned ancestor for PhoneContent) */}
+      <div style={css('position:absolute;inset:0;background:#0e0f1b')}>
+        <PhoneContent v={v} />
+      </div>
+
+      {/* sidebar toggle */}
+      <div className="stay-menu-btn" onClick={() => setOpen(true)} aria-label="Open navigation">
+        <i className="ph ph-list" style={css('font-size:19px')}></i>
+      </div>
+
+      {/* drawer */}
+      <div className={'stay-scrim' + (open ? ' open' : '')} onClick={close}></div>
+      <div className={'stay-drawer' + (open ? ' open' : '')}>
+        <div style={css('display:flex;align-items:flex-start;justify-content:space-between;gap:10px')}>
+          <StayLogo />
+          <div onClick={close} style={css('width:34px;height:34px;border-radius:11px;border:1px solid var(--color-neutral-800);display:flex;align-items:center;justify-content:center;cursor:pointer;flex:none')}>
+            <i className="ph ph-x" style={css('font-size:15px;color:var(--color-neutral-300)')}></i>
+          </div>
+        </div>
+
+        <div style={css('margin-top:20px;padding:14px;border-radius:12px;background:#181a2a;border:1px solid var(--color-divider)')}>
+          <div style={css('font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-neutral-600)')}>Live switches</div>
+          <div style={css('margin-top:12px')}>
+            <Switchers v={v} />
+          </div>
+        </div>
+
+        <div style={css('margin-top:20px')}>
+          <div style={css('font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--color-neutral-600);margin-bottom:10px')}>Screens</div>
+          <RailGroups v={v} onNavigate={close} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function StayCanvas({ v }) {
   return (
-    <div style={css('min-height:100vh;padding:40px 44px 64px;display:flex;gap:34px;align-items:flex-start;justify-content:center')}>
-      <Rail v={v} />
-      <div style={css('flex:none')}>
-        <IOSDevice dark={v.isDark}>
-          <PhoneContent v={v} />
-        </IOSDevice>
+    <>
+      <div className="stay-desktop">
+        <Rail v={v} />
+        <div style={css('flex:none')}>
+          <IOSDevice dark={v.isDark}>
+            <PhoneContent v={v} />
+          </IOSDevice>
+        </div>
+        <RightPanel v={v} />
       </div>
-      <RightPanel v={v} />
-    </div>
+      <MobileShell v={v} />
+    </>
   );
 }

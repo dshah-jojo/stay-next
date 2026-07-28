@@ -56,6 +56,49 @@ a:hover { color: var(--color-accent-200); }
 @keyframes twinkle { 0%, 100% { opacity: .15; } 50% { opacity: .95; } }
 @keyframes fall { 0% { transform: translateY(-20%); } 100% { transform: translateY(560%); } }
 
+/* Responsive shell: the desktop prototype canvas (rail · device · switches)
+   above 1024px; below that the app runs full-screen with a drawer sidebar.
+   The desktop wrapper's layout lives here (not inline) so the media query
+   can actually hide it. */
+.stay-desktop {
+  min-height: 100vh; padding: 40px 44px 64px;
+  display: flex; gap: 34px; align-items: flex-start; justify-content: center;
+}
+.stay-mobile { display: none; }
+@media (max-width: 1023px) {
+  .stay-desktop { display: none; }
+  .stay-mobile { display: block; position: fixed; inset: 0; overflow: hidden; }
+}
+
+.stay-menu-btn {
+  position: fixed; top: 10px; left: 10px; z-index: 95;
+  width: 40px; height: 40px; border-radius: 13px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(35, 37, 50, 0.85);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-divider);
+  color: var(--color-accent-200); cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+.stay-scrim {
+  position: fixed; inset: 0; z-index: 99;
+  background: rgba(10, 11, 20, 0.72);
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+  opacity: 0; pointer-events: none; transition: opacity 0.28s ease;
+}
+.stay-scrim.open { opacity: 1; pointer-events: auto; }
+.stay-drawer {
+  position: fixed; top: 0; bottom: 0; left: 0; z-index: 100;
+  width: min(320px, 86vw);
+  background: #12131f; border-right: 1px solid var(--color-divider);
+  overflow-y: auto; -webkit-overflow-scrolling: touch;
+  padding: 18px 16px 32px;
+  transform: translateX(-102%);
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+  box-shadow: 24px 0 60px rgba(0, 0, 0, 0.5);
+}
+.stay-drawer.open { transform: translateX(0); }
+
 /* style-hover equivalents from the dc template. !important lets the hover
    state win over the element's inline style while hovered. */
 .hv-bg-a900:hover { background: var(--color-accent-900) !important; }
