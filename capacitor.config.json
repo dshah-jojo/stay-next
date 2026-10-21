@@ -1,0 +1,8 @@
+{
+  "appId": "in.appjojo.stay",
+  "appName": "STAY",
+  "webDir": "out",
+  "android": {
+    "allowMixedContent": false
+  }
+}
